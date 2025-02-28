@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" class="light-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm AI - Mental Health Support</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --bg-gradient-light: linear-gradient(120deg, #89CFF0, #ADD8E6, #87CEEB);
+            --bg-gradient-dark: linear-gradient(120deg, #121212, #1a1a1a, #2c2c2c);
+            --container-bg-light: #f0f8ff;
+            --container-bg-dark: #252525;
+            --header-bg-light: linear-gradient(90deg, #60a5fa, #3b82f6);
+            --header-bg-dark: #2563eb;
+            --bot-msg-bg-light: #e5e7eb;
+            --bot-msg-bg-dark: #333;
+            --user-msg-bg-light: #3b82f6;
+            --user-msg-bg-dark: #1e40af;
+            --input-bg-light: #f9fafb;
+            --input-bg-dark: #2d2d2d;
+            --input-field-bg-light: white;
+            --input-field-bg-dark: #1e1e1e;
+            --text-color-light: black;
+            --text-color-dark: white;
+            --border-color-light: #3b82f6;
+            --border-color-dark: #444;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        html.dark-mode {
+            --current-bg-gradient: var(--bg-gradient-dark);
+            --current-container-bg: var(--container-bg-dark);
+            --current-header-bg: var(--header-bg-dark);
+            --current-bot-msg-bg: var(--bot-msg-bg-dark);
+            --current-user-msg-bg: var(--user-msg-bg-dark);
+            --current-input-bg: var(--input-bg-dark);
+            --current-input-field-bg: var(--input-field-bg-dark);
+            --current-text-color: var(--text-color-dark);
+            --current-border-color: var(--border-color-dark);
+        }
+        
+        html.light-mode {
+            --current-bg-gradient: var(--bg-gradient-light);
+            --current-container-bg: var(--container-bg-light);
+            --current-header-bg: var(--header-bg-light);
+            --current-bot-msg-bg: var(--bot-msg-bg-light);
+            --current-user-msg-bg: var(--user-msg-bg-light);
+            --current-input-bg: var(--input-bg-light);
+            --current-input-field-bg: var(--input-field-bg-light);
+            --current-text-color: var(--text-color-light);
+            --current-border-color: var(--border-color-light);
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--current-bg-gradient);
+            color: var(--current-text-color);
+            transition: background 0.3s, color 0.3s;
+            margin: 0;
+            padding: 0;
+            animation: gradientAnimation 10s infinite alternate;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--current-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--current-text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--current-user-msg-bg);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-links a.active:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            min-height: 60vh;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 4rem 2rem;
+            background: var(--current-container-bg);
+        }
+
+        .feature-card {
+            background: var(--current-input-field-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--current-text-color);
+            opacity: 0.8;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--current-bg-gradient);
+        }
+
+        .testimonial-heading {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .testimonial-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--current-container-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 300px;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--current-header-bg);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .toggle-mode {
+            background: none;
+            border: none;
+            color: var(--current-text-color);
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        /* Voice Settings Panel */
+        .voice-settings {
+            position: fixed;
+            top: 70px;
+            right: -300px;
+            width: 300px;
+            background: var(--current-container-bg);
+            border-radius: 10px 0 0 10px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: right 0.3s ease;
+            z-index: 999;
+        }
+
+        .voice-settings.open {
+            right: 0;
+        }
+
+        .voice-settings-toggle {
+            position: absolute;
+            left: -40px;
+            top: 10px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px 0 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .voice-settings h3 {
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--current-border-color);
+            padding-bottom: 10px;
+        }
+
+        .voice-option {
+            margin-bottom: 15px;
+        }
+
+        .voice-option label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .voice-option select,
+        .voice-option input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--current-border-color);
+            background: var(--current-input-field-bg);
+            color: var(--current-text-color);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: var(--current-container-bg);
+            border-radius: 16px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            flex-direction: column;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            background: var(--current-header-bg);
+            color: white;
+        }
+
+        .chat-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .voice-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 75%;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease-in-out;
+            margin-bottom: 10px;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background: var(--current-user-msg-bg);
+            color: white;
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+            background: var(--current-bot-msg-bg);
+            color: var(--current-text-color);
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 12px;
+            background: var(--current-input-bg);
+            border-top: 2px solid var(--current-border-color);
+        }
+
+        .voice-btn {
+            padding: 12px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+        }
+
+        .voice-btn.listening {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); background: var(--current-user-msg-bg); }
+            50% { transform: scale(1.1); background: #e53e3e; }
+            100% { transform: scale(1); background: var(--current-user-msg-bg); }
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px solid var(--current-border-color);
+            outline: none;
+            font-size: 14px;
+            background: var(--current-input-field-bg);
+            color: var(--current-text-color);
+        }
+
+        .chat-input button {
+            margin-left: 10px;
+            padding: 12px 16px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .chat-badge {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: transform 0.3s;
+        }
+
+        .chat-badge:hover {
+            transform: scale(1.1);
+        }
+
+        /* Microphone animation */
+        .voice-animation {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .voice-animation.active {
+            display: flex;
+        }
+
+        .mic-icon {
+            font-size: 50px;
+            color: white;
+            animation: micPulse 1.5s infinite;
+        }
+
+        @keyframes micPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .chat-container {
+                width: 90%;
+                height: 70vh;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .voice-settings {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">🧠 <span>Calm AI</span></a>
+        <div class="nav-links">
+            <a href="ui.html">Home</a>
+            <a href="#features">Features</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#about">About</a>
+        </div>
+        <button class="toggle-mode" onclick="toggleDarkMode()">
+            <span id="modeIcon">🌙</span>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Your Mental Health Companion</h1>
+        <p>Calm AI provides supportive, judgment-free conversations to help you navigate life's challenges. Talk to our AI companion anytime, anywhere.</p>
+        <button class="cta-button" onclick="window.location.href='ui.html'">Chat Now</button>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Private & Secure</h3>
+            <p>Your conversations are completely private and secure. We prioritize your confidentiality above all else.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⏰</div>
+            <h3>24/7 Availability</h3>
+            <p>Get support whenever you need it, day or night. Calm AI is always here to listen and help.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Personalized Support</h3>
+            <p>Our AI adapts to your needs and provides tailored guidance based on your unique situation.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎤</div>
+            <h3>Voice Interaction</h3>
+            <p>Speak naturally with our AI companion. Voice recognition and text-to-speech make communication effortless.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <h2 class="testimonial-heading">What Our Users Say</h2>
+        <div class="testimonial-cards">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Calm AI helped me through a difficult time when I felt like I had no one to talk to. It's been a real lifeline."</p>
+                <p class="testimonial-author">- Sarah J.</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"I appreciate having a place to express my thoughts without judgment. The daily check-ins keep me accountable for my mental health."</p>
+                <p class="testimonial-author">- Michael T.</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"As someone with social anxiety, having a private space to work through my thoughts has been invaluable."</p>
+                <p class="testimonial-author">- Ava R.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <p>Calm AI - Your mental health support companion</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <p>&copy; 2025 Calm AI. All rights reserved.</p>
+    </footer>
+
+
+    <!-- Chat Container -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3>Your mental health support companion</h3>
+            <div class="chat-actions">
+                <button class="voice-toggle" id="voiceToggle" onclick="toggleVoiceInput()">
+                    🔊
+                </button>
+                <button class="close-chat" onclick="closeChat()">✕</button>
+            </div>
+        </div>
+        <div class="messages" id="messagesBox"></div>
+        <div class="chat-input">
+            <button class="voice-btn" id="voiceBtn" onclick="startSpeechRecognition()">🎤</button>
+            <input type="text" id="userInput" placeholder="Share your thoughts..." onkeydown="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        loadThemePreference();
+
+        // Global voice settings
+        let voiceSettings = {
+            voice: null,
+            rate: 1,
+            pitch: 1,
+            autoSpeak: true
+        };
+
+        // Available voices
+        let availableVoices = [];
+
+        // Check for saved theme preference
+        function loadThemePreference() {
+            const savedTheme = localStorage.getItem("theme");
+            const html = document.documentElement;
+            const modeIcon = document.getElementById("modeIcon");
+            
+            if (savedTheme === "dark") {
+                html.classList.remove("light-mode");
+                html.classList.add("dark-mode");
+                modeIcon.textContent = "☀️";
+            } else {
+                html.classList.remove("dark-mode");
+                html.classList.add("light-mode");
+                modeIcon.textContent = "🌙";
+            }
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const modeIcon = document.getElementById("modeIcon");
+            
+            if (html.classList.contains("light-mode")) {
+                html.classList.remove("light-mode");
+                html.classList.add("dark-mode");
+                modeIcon.textContent = "☀️";
+                localStorage.setItem("theme", "dark");
+            } else {
+                html.classList.remove("dark-mode");
+                html.classList.add("light-mode");
+                modeIcon.textContent = "🌙";
+                localStorage.setItem("theme", "light");
+            }
+        }
+    </script>
+</body>
+</html>
