@@ -3,208 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern AI Chat</title>
+    <title>Calm AI - Mental Health Support</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Arial", sans-serif;
+            font-family: 'Inter', sans-serif;
         }
-
         body {
             display: flex;
-            height: 100vh;
-            background: #ecf0f1;
-        }
-
-        /* Sidebar for Chat History */
-        .sidebar {
-            width: 260px;
-            background: #2c3e50;
-            color: white;
-            height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .chat-list {
-            list-style: none;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        .chat-list li {
-            background: #34495e;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .chat-list li:hover {
-            background: #1abc9c;
-        }
-
-        .clear-chat {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .clear-chat:hover {
-            background: #c0392b;
-        }
-
-        /* Main Chat Section */
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(90deg, #f3f4f6, #e5e7eb);
+            transition: background 0.3s, color 0.3s;
+            margin: 0;
+            padding: 0;
+            animation: gradientAnimation 10s infinite alternate;
+            overflow: hidden;
         }
 
-        .chat-card {
-            width: 90%;
+        @keyframes gradientAnimation {
+            0% { background: linear-gradient(120deg, #89CFF0, #ADD8E6, #87CEEB); }
+            100% { background: linear-gradient(120deg, #87CEEB, #ADD8E6, #B0E0E6); }
+        }
+
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 200px;
+            bottom: 0;
+            background: url('https://i.imgur.com/QkIa5Zc.png');
+            background-size: cover;
+            opacity: 0.5;
+            animation: waveAnimation 6s infinite linear;
+        }
+
+        @keyframes waveAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }   
+    
+        .container {
+            width: 100%;
             max-width: 500px;
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 85vh;
+            transition: background 0.3s;
         }
-
+        .dark-mode .container {
+            background: #1e1e1e;
+        }
         .header {
-            font-size: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            font-size: 18px;
             font-weight: bold;
-            text-align: center;
-            margin-bottom: 10px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            color: white;
         }
-
-        /* Chat Messages Section */
+        .dark-mode .header {
+            background: #2563eb;
+        }
+        .toggle-mode {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
         .chat-container {
             flex-grow: 1;
+            padding: 20px;
             overflow-y: auto;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 10px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px;
-            border-radius: 12px;
-            margin: 10px 0;
-            word-wrap: break-word;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeIn 0.4s forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .user-message {
-            background: #4CAF50;
-            color: white;
-            align-self: flex-end;
-            border-radius: 12px 12px 0 12px;
-        }
-
-        .bot-message {
-            background: #e0e0e0;
-            align-self: flex-start;
-            border-radius: 12px 12px 12px 0;
-        }
-
-        /* Chat Input Section */
-        .chat-input {
             display: flex;
-            align-items: center;
-            margin-top: 10px;
-            gap: 10px;
+            flex-direction: column;
+            gap: 12px;
         }
-        .dark-mode .chat-card {
+        .message {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 75%;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease-in-out;
+            margin-bottom: 10px;
+        }
+        .user-message {
+            align-self: flex-end;
+            background: #3b82f6;
+            color: white;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background: #e5e7eb;
+            color: black;
+        }
+        .dark-mode .bot-message {
             background: #333;
             color: white;
         }
-        .chat-input input {
-            flex: 1;
+        .chat-input {
+            display: flex;
             padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 12px;
+            background: #f9fafb;
+            border-top: 2px solid #3b82f6;
+        }
+        .dark-mode .chat-input {
+            background: #2d2d2d;
+            border-top: 1px solid #444;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px solid #3b82f6;
             outline: none;
-            font-size: 16px;
+            font-size: 14px;
         }
-
+        .dark-mode .chat-input input {
+            background: #1e1e1e;
+            color: white;
+            border: 1px solid #444;
+        }
         .chat-input button {
-            width: 45px;
-            height: 45px;
-            border: none;
-            border-radius: 50%;
-            background-color: #4CAF50;
+            margin-left: 10px;
+            padding: 12px 16px;
+            background: #3b82f6;
             color: white;
-            cursor: pointer;
-            font-size: 18px;
-            transition: 0.3s;
-        }
-
-        .voice-btn {
-            background: #3498db;
             border: none;
-            border-radius: 50%;
-            color: white;
-            padding: 10px;
+            border-radius: 20px;
             cursor: pointer;
+            transition: background 0.3s;
         }
-
         .chat-input button:hover {
-            background: #388e3c;
+            background: #2563eb;
         }
-    </style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    }
+</style>
 </head>
 <body>
-    <!-- Chat History Sidebar -->
-    <div class="sidebar">
-        <h2>Chat History</h2>
-        <ul class="chat-list" id="chatList"></ul>
-        <button class="clear-chat" onclick="clearChatHistory()">Clear Chats</button>
-    </div>
-
-    <!-- Main Chat Window -->
-    <div class="main-container">
-        <div class="chat-card">
-            <div class="header">Calm Ai by MindSurge</div>
-            <div class="chat-container" id="chatBox"></div>
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Type your message..." onkeydown="handleKeyPress(event)">
-                <button onclick="sendMessage()">➤</button>
-            </div>
+    
+    <div class="container">
+        <div class="header">
+            <h3>Your mental health support companion.</h3>
+            <button class="toggle-mode" onclick="toggleDarkMode()">🌙</button>
+        </div>
+        <div class="chat-container" id="chatBox"></div>
+        <div class="chat-input">
+            <button class="voice-btn" onclick="startSpeechRecognition()">🎙️</button>
+            <input type="text" id="userInput" placeholder="💬 Share your thoughts..." onkeydown="handleKeyPress(event)">
+            <button class="chat-input-button" onclick="sendMessage()">Send</button>
+            <button class="chat-input-button" onclick="clearChatHistory()">Clear Chats</button>
         </div>
     </div>
-
     <script>
-        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-        let chatSessions = JSON.parse(localStorage.getItem('chatSessions')) || [];
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        function displayMessage(message, sender) {
+            let chatBox = document.getElementById("chatBox");
+            let messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", sender === "user" ? "user-message" : "bot-message");
+            messageDiv.textContent = message;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
 
         function sendMessage() {
             let userInput = document.getElementById("userInput");
@@ -212,95 +189,118 @@
             let messageText = userInput.value.trim();
             if (messageText === "") return;
 
-            let userMessage = document.createElement("div");
-            userMessage.classList.add("message", "user-message");
-            userMessage.textContent = messageText;
-            chatBox.appendChild(userMessage);
+            displayMessage(messageText, "user");
             userInput.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
 
-            chatHistory.push({ type: 'user', message: messageText });
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            const history = JSON.parse(localStorage.getItem("chatHistory")) || [];
+            history.push({ sender: "user", text: messageText });
+            localStorage.setItem("chatHistory", JSON.stringify(history));
 
             setTimeout(() => {
-                let botMessage = document.createElement("div");
-                botMessage.classList.add("message", "bot-message");
-                botMessage.textContent = getBotResponse(messageText);
-                chatBox.appendChild(botMessage);
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                chatHistory.push({ type: 'bot', message: botMessage.textContent });
-                localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            }, 600);
+                let botMessageText = getCalmResponse(messageText);
+                console.log("Bot response:", botMessageText); // Log the bot's response
+                displayMessage(botMessageText, "ai");
+                history.push({ sender: "ai", text: botMessageText });
+                localStorage.setItem("chatHistory", JSON.stringify(history));
+            }, 1000);
         }
 
         function handleKeyPress(event) {
-            if (event.key === "Enter") sendMessage();
+            if (event.key === "Enter") {
+                sendMessage();
+            }
         }
 
-        function getBotResponse(input) {
-            let responses = {
-                "hi": "Hello! How can I help you?",
-                "how are you": "I'm an AI, so I don't have feelings, but I'm here to chat!",
-                "bye": "Goodbye! Have a great day.",
-                "default": "I'm here to assist. Ask me anything!"
+        function startSpeechRecognition() {
+            if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+                alert("Sorry, your browser does not support speech recognition.");
+                return;
+            }
+
+            let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = false; // Disable continuous recognition
+
+            recognition.lang = 'en-US';
+            recognition.start();
+
+            let userInput = document.getElementById("userInput");
+            userInput.value = ""; // Clear input after recognition
+
+            userInput.placeholder = "🎤 Listening...";
+            recognition.onresult = function(event) {
+                let transcript = event.results[0][0].transcript;
+                userInput.value = transcript;
+                sendMessage();
             };
-            return responses[input.toLowerCase()] || responses["default"];
+            recognition.onend = function() {
+                userInput.placeholder = "How are you feeling today?";
+                // Do not restart recognition automatically
+            };
+
+            recognition.onerror = function(event) {
+                console.error("Speech recognition error", event.error);
+                alert("An error occurred during speech recognition: " + event.error + ". Please check your microphone permissions.");
+
+                userInput.placeholder = "How are you feeling today?";
+            };
         }
 
         function loadChatHistory() {
-            let chatBox = document.getElementById("chatBox");
+            const chatBox = document.getElementById("chatBox");
             chatBox.innerHTML = "";
-            chatHistory.forEach(({ type, message }) => {
-                let msgElement = document.createElement("div");
-                msgElement.classList.add("message", type === 'user' ? 'user-message' : 'bot-message');
-                msgElement.textContent = message;
-                chatBox.appendChild(msgElement);
+            const history = JSON.parse(localStorage.getItem("chatHistory")) || [];
+            history.forEach(msg => {
+                displayMessage(msg.text, msg.sender);
             });
         }
 
         function clearChatHistory() {
-            chatSessions.push({ id: new Date().toISOString(), history: chatHistory });
+            const history = JSON.parse(localStorage.getItem("chatHistory")) || [];
+            const chatSessions = JSON.parse(localStorage.getItem("chatSessions")) || [];
+            
+            // Save current chat history to chat sessions
+            chatSessions.push({ id: new Date().toISOString(), history: history });
             localStorage.setItem("chatSessions", JSON.stringify(chatSessions));
+            
+            // Clear the chat history
             localStorage.removeItem("chatHistory");
-            chatHistory = [];
             loadChatHistory();
-            loadChatSessions();
         }
-        function startVoiceRecognition() {
-            let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.onresult = function(event) {
-                document.getElementById("userInput").value = event.results[0][0].transcript;
-            };
-            recognition.start();
-        }
-        function toggleTheme() {
-            document.body.classList.toggle("dark-mode");
-        }
-    
-        function speak(text) {
+
+        function speak(text, voiceType) {
+            console.log("Speaking text:", text); // Log the text being spoken
             let speech = new SpeechSynthesisUtterance(text);
-            speech.lang = "en-US";
+            speech.lang = 'en-US';
+            
+            // Retrieve available voices
+            const voices = window.speechSynthesis.getVoices();
+            console.log("Available voices:", voices); // Log available voices
+            
+            // Set the voice based on the voiceType parameter
+            if (voiceType === 'male') {
+                speech.voice = voices.find(voice => voice.name.toLowerCase().includes('male'));
+            } else if (voiceType === 'female') {
+                speech.voice = voices.find(voice => voice.name.toLowerCase().includes('female'));
+            }
+            
             window.speechSynthesis.speak(speech);
         }
 
-        function loadChatSessions() {
-            let chatList = document.getElementById("chatList");
-            chatList.innerHTML = "";
-            chatSessions.forEach(session => {
-                let li = document.createElement("li");
-                li.textContent = session.id.slice(0, 19).replace("T", " ");
-                li.onclick = () => {
-                    chatHistory = session.history;
-                    localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-                    loadChatHistory();
-                };
-                chatList.appendChild(li);
-            });
-        }
+        window.onload = loadChatHistory;
 
-        loadChatHistory();
-        loadChatSessions();
+        function getCalmResponse(input, voiceType = 'female') {
+            let responses = [
+                "I'm here for you. Take a deep breath and tell me what's on your mind.",
+                "You're not alone. I'm here to support you through this.",
+                "It's okay to have difficult days. You are not alone.",
+                "You're doing your best, and that's enough. How can I support you today?",
+                "Sometimes, a small step forward is all you need. What’s something positive you can do for yourself today?",
+                "Remember, it's okay to ask for help when you need it."
+            ];
+            const response = responses[Math.floor(Math.random() * responses.length)];
+            speak(response, voiceType); // Speak the response
+            return response;
+        }
     </script>
 </body>
 </html>
