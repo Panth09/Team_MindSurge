@@ -1,0 +1,210 @@
+# Calm AI - Technical Documentation
+
+## 1. Introduction
+Calm AI is a web application designed to provide mental health support through an AI companion. This document outlines the technical specifications, component architecture, and implementation details of the application.
+
+## 2. Architecture Overview
+
+### 2.1 Front-End Components
+The application follows a simple static web architecture with the following components:
+- **Landing Page**: Introduces the application and its features
+- **Chat Interface**: The main functionality where users interact with the AI
+- **Authentication System**: Handles user registration and login
+- **Blog Section**: Educational content related to mental health
+- **Suggestions Page**: Curated mental health resources
+- **About Page**: Information about the application and its creators
+
+### 2.2 Theming System
+The application implements a dual-theme system (light/dark mode) using CSS variables and JavaScript toggling. Each theme defines:
+- Background colors and gradients
+- Text colors
+- Element backgrounds
+- Border colors
+- Interactive element styling
+
+### 2.3 User Authentication Flow
+1. User clicks Login/Sign Up button
+2. Modal appears with form fields
+3. User enters credentials
+4. Client-side validation occurs
+5. On success, user is granted access to account features
+6. On failure, error message is displayed
+
+## 3. Implementation Details
+
+### 3.1 CSS Variable System
+```css
+:root {
+    --bg-gradient-light: linear-gradient(120deg, #89CFF0, #ADD8E6, #87CEEB);
+    --bg-gradient-dark: linear-gradient(120deg, #121212, #1a1a1a, #2c2c2c);
+    /* Additional variables */
+}
+
+html.dark-mode {
+    --current-bg-gradient: var(--bg-gradient-dark);
+    /* Additional mappings */
+}
+
+html.light-mode {
+    --current-bg-gradient: var(--bg-gradient-light);
+    /* Additional mappings */
+}
+```
+
+This system allows for easy theming throughout the application by referencing the current theme's variables.
+
+### 3.2 Modal System
+Modals are implemented using a combination of CSS transitions and JavaScript:
+- CSS handles the visual transitions (opacity, transform)
+- JavaScript controls the show/hide logic and form processing
+- Modal backdrop uses a blur effect for depth
+
+### 3.3 Form Validation
+Client-side validation includes:
+- Required field checking
+- Email format validation
+- Password matching (for registration)
+- Error message display
+
+### 3.4 Dark Mode Toggle
+```javascript
+function toggleDarkMode() {
+    const htmlElement = document.documentElement;
+    const modeIcon = document.getElementById('modeIcon');
+    
+    htmlElement.classList.toggle('dark-mode');
+    htmlElement.classList.toggle('light-mode');
+    
+    if (htmlElement.classList.contains('dark-mode')) {
+        modeIcon.textContent = '☀️';
+    } else {
+        modeIcon.textContent = '🌙';
+    }
+}
+```
+
+This function toggles the theme class on the HTML element, which triggers the CSS variable switch.
+
+## 4. UI/UX Elements
+
+### 4.1 Animation System
+The application uses several animation techniques:
+- CSS transitions for smooth state changes
+- Keyframe animations for background gradient movement
+- Transform animations for interactive elements
+- Modal entrance/exit animations
+
+### 4.2 Responsive Design
+- Flexbox layout for adaptive component sizing
+- Media queries for major breakpoints
+- Percentage-based widths for fluid layouts
+- Mobile-friendly navigation
+
+### 4.3 Accessibility Considerations
+- Semantic HTML structure
+- Color contrast compliance
+- Interactive elements have appropriate states
+- Form labels are properly associated with inputs
+
+## 5. Integration Points
+
+### 5.1 AI Chat Integration (To Be Implemented)
+The chat system will need to interface with an AI backend. Integration points will include:
+- WebSocket or HTTP connection to AI service
+- Message formatting and parsing
+- Response handling and display
+- Error handling for service disruptions
+
+### 5.2 User Data Storage (To Be Implemented)
+For persistent user data, the application will need:
+- Secure authentication system
+- Database connection for user profiles
+- Conversation history storage
+- User preference storage
+
+## 6. Performance Optimization
+
+### 6.1 Current Optimizations
+- CSS variable usage reduces stylesheet size
+- Minimal JavaScript with vanilla implementation
+- No external dependencies for core functionality
+- Efficient DOM manipulation in modal operations
+
+### 6.2 Recommended Future Optimizations
+- Asset minification
+- Image optimization
+- Lazy loading of non-critical resources
+- Implementation of service workers for offline capability
+
+## 7. Browser Compatibility
+
+The application is designed to work with:
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
+
+Mobile browsers:
+- iOS Safari
+- Android Chrome
+
+## 8. Security Considerations
+
+### 8.1 Current Implementation
+- Client-side form validation
+- Basic password requirements
+- Secure modal implementation
+
+### 8.2 Required for Production
+- HTTPS implementation
+- Proper authentication backend
+- CSRF protection
+- XSS prevention
+- Rate limiting
+- Input sanitization
+
+## 9. Deployment Instructions
+
+### 9.1 Development Environment
+1. Clone the repository
+2. Open index.html in a browser
+3. No build step required for basic development
+
+### 9.2 Production Deployment
+1. Minify all CSS and JavaScript files
+2. Optimize images
+3. Set up proper server with HTTPS
+4. Implement backend services for authentication and AI
+5. Set up proper error logging
+6. Configure caching headers
+
+## 10. Testing Guidelines
+
+### 10.1 Manual Testing Checklist
+- Verify all links work correctly
+- Test form validation for all edge cases
+- Confirm theme toggle works in all sections
+- Test responsive layout at various breakpoints
+- Verify modals open/close properly
+- Test tab navigation for accessibility
+
+### 10.2 Automated Testing (Future Implementation)
+- Unit tests for JavaScript functions
+- Integration tests for form submission
+- End-to-end tests for user flows
+- Accessibility automated testing
+
+## 11. Appendix
+
+### 11.1 Dependencies
+The current implementation has no external dependencies and uses:
+- Vanilla JavaScript
+- Native CSS features
+- Standard HTML5
+
+### 11.2 Browser Feature Requirements
+- CSS Variables (custom properties)
+- Flexbox
+- CSS Transitions and Animations
+- ES6 JavaScript features
+- LocalStorage (for future preference saving)
