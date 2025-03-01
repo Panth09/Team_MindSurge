@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindful Journey | Mental Health Blog</title>
+    <style>
+        :root {
+            --primary: #5b8a72;
+            --secondary: #f2d8b3;
+            --light: #f9f7f3;
+            --dark: #333333;
+            --accent: #d88c9a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .hero {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e6c599;
+            transform: translateY(-2px);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .blog-posts article {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .post-img {
+            width: 100%;
+            height: 250px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-style: italic;
+        }
+        
+        .post-content {
+            padding: 1.5rem;
+        }
+        
+        .post-meta {
+            color: #777;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .post-title {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        
+        .read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .read-more:hover {
+            text-decoration: underline;
+        }
+        
+        .sidebar {
+            margin-top: 0;
+        }
+        
+        .sidebar-widget {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-widget h3 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+        
+        .categories, .recent-posts {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .categories li, .recent-posts li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .categories a, .recent-posts a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .categories a:hover, .recent-posts a:hover {
+            color: var(--primary);
+        }
+        
+        .testimonial {
+            font-style: italic;
+            position: relative;
+            padding: 0 1rem;
+        }
+        
+        .testimonial::before {
+            content: '"';
+            font-size: 3rem;
+            color: var(--secondary);
+            position: absolute;
+            left: -10px;
+            top: -20px;
+        }
+        
+        .testimonial-author {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        
+        .cta {
+            background-color: var(--accent);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin: 3rem 0;
+        }
+        
+        .cta h2 {
+            margin-top: 0;
+        }
+        
+        .newsletter {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form {
+            display: flex;
+        }
+        
+        .newsletter-form input {
+            flex-grow: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .newsletter-form button {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            padding: 0 1.2rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            color: var(--secondary);
+            margin-top: 0;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .footer-column li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+        }
+        
+        .footer-column a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Mindful<span>Journey</span></div>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">Podcast</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Your Mental Health Matters</h1>
+            <p>Explore expert-backed articles, personal stories, and practical resources to support your mental wellbeing journey. Everyone deserves to thrive.</p>
+            <a href="#" class="btn">Explore Resources</a>
+        </div>
+    </section>
+    
+    <div class="container">
+        <main class="main-content">
+            <section class="blog-posts">
+                <article>
+                    <div class="post-img">Featured Post Image</div>
+                    <div class="post-content">
+                        <div class="post-meta">February 26, 2025 • Mental Health Basics</div>
+                        <h2 class="post-title">Understanding Anxiety: Signs, Symptoms, and Coping Strategies</h2>
+                        <p>Anxiety disorders affect millions worldwide, yet many people still struggle to recognize the signs in themselves or loved ones. This comprehensive guide breaks down what anxiety really is, how it might manifest in your daily life, and evidence-based strategies that can help manage symptoms.</p>
+                        <p>From cognitive behavioral techniques to mindfulness practices, discover approaches that mental health professionals recommend...</p>
+                        <a href="#" class="read-more">Continue Reading →</a>
+                    </div>
+                </article>
+                
+                <article>
+                    <div class="post-img">Post Image</div>
+                    <div class="post-content">
+                        <div class="post-meta">February 20, 2025 • Self-Care</div>
+                        <h2 class="post-title">The Science of Self-Compassion: Why Being Kind to Yourself Matters</h2>
+                        <p>Self-criticism might seem like a path to improvement, but research shows that self-compassion actually leads to better mental health outcomes and greater motivation. Learn why treating yourself with the same kindness you'd offer a friend can transform your wellbeing.</p>
+                        <a href="#" class="read-more">Continue Reading →</a>
+                    </div>
+                </article>
+                
+                <article>
+                    <div class="post-img">Post Image</div>
+                    <div class="post-content">
+                        <div class="post-meta">February 15, 2025 • Personal Stories</div>
+                        <h2 class="post-title">From Burnout to Balance: Sarah's Journey Through Workplace Mental Health</h2>
+                        <p>After years of pushing herself to the breaking point, Sarah found herself unable to get out of bed. Her story of recovery offers insights into recognizing the warning signs of burnout and the steps she took to rebuild a more sustainable relationship with work.</p>
+                        <a href="#" class="read-more">Continue Reading →</a>
+                    </div>
+                </article>
+            </section>
+            
+            <aside class="sidebar">
+                <div class="sidebar-widget">
+                    <h3>About MindfulJourney</h3>
+                    <p>Founded by mental health professionals and lived experience advocates, we provide evidence-based information and supportive community for anyone navigating mental health challenges.</p>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3>Categories</h3>
+                    <ul class="categories">
+                        <li><a href="#">Anxiety & Depression</a></li>
+                        <li><a href="#">Stress Management</a></li>
+                        <li><a href="#">Self-Care Practices</a></li>
+                        <li><a href="#">Relationships & Boundaries</a></li>
+                        <li><a href="#">Therapy & Treatment Options</a></li>
+                        <li><a href="#">Personal Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3>Recent Posts</h3>
+                    <ul class="recent-posts">
+                        <li><a href="#">How to Support a Loved One With Depression</a></li>
+                        <li><a href="#">5 Mindfulness Exercises You Can Do in Under 5 Minutes</a></li>
+                        <li><a href="#">Navigating Mental Health Care: Finding the Right Professional</a></li>
+                        <li><a href="#">Digital Detox: Reclaiming Your Mental Space</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3>Testimonial</h3>
+                    <div class="testimonial">
+                        <p>The articles on MindfulJourney helped me understand what I was experiencing wasn't just "in my head." The practical strategies gave me somewhere to start, and I finally felt less alone.</p>
+                        <div class="testimonial-author">— Michael, 34</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+        
+        <section class="cta">
+            <h2>Stay Connected</h2>
+            <p>Join our community and receive weekly insights, resources, and support directly in your inbox.</p>
+            <div class="newsletter">
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <p>We respect your privacy. Unsubscribe anytime.</p>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Articles</a></li>
+                        <li><a href="#">Resources</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Crisis Support Hotlines</a></li>
+                        <li><a href="#">Find a Therapist</a></li>
+                        <li><a href="#">Self-Help Tools</a></li>
+                        <li><a href="#">Book Recommendations</a></li>
+                        <li><a href="#">Support Groups</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <div class="social-links">
+                        <a href="#">F</a>
+                        <a href="#">T</a>
+                        <a href="#">I</a>
+                        <a href="#">P</a>
+                    </div>
+                    <p>Email: hello@mindfuljourney.com</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 MindfulJourney. All rights reserved.</p>
+                <p>Disclaimer: This website provides general information and discussions about mental health and related subjects. The information provided is not a substitute for professional advice, diagnosis, or treatment.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
