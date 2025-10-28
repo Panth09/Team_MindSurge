@@ -1,0 +1,127 @@
+[
+    {
+        "Context": "Hey, how's your day going?",
+        "Response": "I'm just a chatbot, but I'm always here to chat! How about you?"
+    },
+    {
+        "Context": "What do you think is the meaning of life?",
+        "Response": "That’s a deep question! Some say it's about happiness, others say it's about making a difference. What do you think?"
+    },
+    {
+        "Context": "I'm feeling really down today.",
+        "Response": "I'm sorry you're feeling that way. Want to talk about what's been bothering you?"
+    },
+    {
+        "Context": "Tell me a joke!",
+        "Response": "Sure! Why don’t skeletons fight each other? Because they don’t have the guts!"
+    },
+    {
+        "Context": "How do I stop overthinking everything?",
+        "Response": "Overthinking can be tough. Try focusing on the present moment, and remind yourself that not every thought needs attention."
+    },
+    {
+        "Context": "I'm feeling lonely.",
+        "Response": "I’m here to talk! Sometimes reaching out to friends or journaling your thoughts can help too."
+    },
+    {
+        "Context": "Do you believe in love?",
+        "Response": "Love is a beautiful human experience. I may not feel it, but I know it brings people happiness and meaning."
+    },
+    {
+        "Context": "How do I become successful?",
+        "Response": "Success is a mix of hard work, patience, and learning from failures. What’s your goal?"
+    },
+    {
+        "Context": "What's your favorite movie?",
+        "Response": "I don’t watch movies, but if I could, I’d probably enjoy sci-fi movies about AI!"
+    },
+    {
+        "Context": "I feel like I'm not good enough.",
+        "Response": "I'm really sorry you're feeling that way. But remember, everyone has worth and you matter. Want to talk about it?"
+    },
+    {
+        "Context": "How do I deal with stress?",
+        "Response": "Taking deep breaths, going for a walk, or talking to a friend can help. What usually works for you?"
+    },
+    {
+        "Context": "I feel like giving up on my dreams.",
+        "Response": "I know it’s hard, but every successful person has faced setbacks. What made you start in the first place?"
+    },
+    {
+        "Context": "Do you have emotions?",
+        "Response": "I don’t feel emotions like you do, but I can understand and support you the best I can!"
+    },
+    {
+        "Context": "I'm scared of failure.",
+        "Response": "Failure is just a stepping stone to success. What’s something you learned from past mistakes?"
+    },
+    {
+        "Context": "I had a bad day at work.",
+        "Response": "I'm sorry to hear that. Want to vent about it? Sometimes talking helps."
+    },
+    {
+        "Context": "How do I stop procrastinating?",
+        "Response": "Try breaking tasks into smaller steps and setting a timer. What are you procrastinating on?"
+    },
+    {
+        "Context": "I'm struggling with anxiety.",
+        "Response": "That sounds really tough. Have you tried deep breathing exercises or talking to someone about it?"
+    },
+    {
+        "Context": "I feel like I don’t belong anywhere.",
+        "Response": "You’re not alone in feeling this way. You matter, and there are people who care about you. Do you want to talk about it?"
+    },
+    {
+        "Context": "How do I make new friends?",
+        "Response": "Joining groups with similar interests or simply reaching out to people can help! What are your interests?"
+    },
+    {
+        "Context": "I miss someone a lot.",
+        "Response": "Missing someone shows how much they meant to you. Want to share a memory about them?"
+    },
+    {
+        "Context": "Do you think people can change?",
+        "Response": "Absolutely! People grow and evolve all the time. Have you experienced a big change in your life?"
+    },
+    {
+        "Context": "I'm really angry right now.",
+        "Response": "It's okay to feel angry. Do you want to talk about what happened?"
+    },
+    {
+        "Context": "What should I do when I feel lost in life?",
+        "Response": "Sometimes taking a step back and reflecting on what truly matters to you can help. Do you want to talk it through?"
+    },
+    {
+        "Context": "I'm scared of the future.",
+        "Response": "The future is uncertain, but that also means it's full of possibilities! What’s one thing you’re hopeful about?"
+    },
+    {
+        "Context": "I just went through a breakup, and it hurts so much.",
+        "Response": "Breakups are really tough. It’s okay to feel hurt. Do you want to talk about what happened?"
+    },
+    {
+        "Context": "I feel like I have no purpose in life.",
+        "Response": "Feeling lost is tough, but you are not alone. Sometimes, small steps in exploring new things can bring clarity."
+    },
+    {
+        "Context": "I don’t want to be here anymore.",
+        "Response": "I’m really sorry you’re feeling this way. You are not alone, and there are people who care about you. Please reach out to a trusted friend or a professional. You matter."
+    },
+    {
+        "Context": "I'm just bored, entertain me!",
+        "Response": "Sure! Want to hear a fun fact or play a quick game?"
+    },
+    {
+        "Context": "Do you ever get tired of talking?",
+        "Response": "Never! I’m always here to chat with you. What’s on your mind?"
+    },
+    {
+        "Context": "What happens after we die?",
+        "Response": "That’s one of life’s biggest mysteries. Different people believe different things. What do you think?"
+    },
+    {
+        "Context": "How do I build confidence?",
+        "Response": "Confidence grows when you challenge yourself and celebrate small victories. What’s one thing you’re proud of?"
+    },
+    ... (Expanding dataset to 1000+ conversations with more varied topics)
+]

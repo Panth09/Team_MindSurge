@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en" class="light-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm AI - Mental Health Support</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --bg-gradient-light: linear-gradient(120deg, #89CFF0, #ADD8E6, #87CEEB);
+            --bg-gradient-dark: linear-gradient(120deg, #121212, #1a1a1a, #2c2c2c);
+            --container-bg-light: #f0f8ff;
+            --container-bg-dark: #252525;
+            --header-bg-light: linear-gradient(90deg, #60a5fa, #3b82f6);
+            --header-bg-dark: #2563eb;
+            --bot-msg-bg-light: #e5e7eb;
+            --bot-msg-bg-dark: #333;
+            --user-msg-bg-light: #3b82f6;
+            --user-msg-bg-dark: #1e40af;
+            --input-bg-light: #f9fafb;
+            --input-bg-dark: #2d2d2d;
+            --input-field-bg-light: white;
+            --input-field-bg-dark: #1e1e1e;
+            --text-color-light: black;
+            --text-color-dark: white;
+            --border-color-light: #3b82f6;
+            --border-color-dark: #444;
+            --sidebar-bg-light: #f0f8ff;
+            --sidebar-bg-dark: #1a1a1a;
+            --sidebar-hover-light: #e0e7ff;
+            --sidebar-hover-dark: #2a2a2a;
+            --sidebar-active-light: #dbeafe;
+            --sidebar-active-dark: #333;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        html.dark-mode {
+            --current-bg-gradient: var(--bg-gradient-dark);
+            --current-container-bg: var(--container-bg-dark);
+            --current-header-bg: var(--header-bg-dark);
+            --current-bot-msg-bg: var(--bot-msg-bg-dark);
+            --current-user-msg-bg: var(--user-msg-bg-dark);
+            --current-input-bg: var(--input-bg-dark);
+            --current-input-field-bg: var(--input-field-bg-dark);
+            --current-text-color: var(--text-color-dark);
+            --current-border-color: var(--border-color-dark);
+            --current-sidebar-bg: var(--sidebar-bg-dark);
+            --current-sidebar-hover: var(--sidebar-hover-dark);
+            --current-sidebar-active: var(--sidebar-active-dark);
+        }
+        
+        html.light-mode {
+            --current-bg-gradient: var(--bg-gradient-light);
+            --current-container-bg: var(--container-bg-light);
+            --current-header-bg: var(--header-bg-light);
+            --current-bot-msg-bg: var(--bot-msg-bg-light);
+            --current-user-msg-bg: var(--user-msg-bg-light);
+            --current-input-bg: var(--input-bg-light);
+            --current-input-field-bg: var(--input-field-bg-light);
+            --current-text-color: var(--text-color-light);
+            --current-border-color: var(--border-color-light);
+            --current-sidebar-bg: var(--sidebar-bg-light);
+            --current-sidebar-hover: var(--sidebar-hover-light);
+            --current-sidebar-active: var(--sidebar-active-light);
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--current-bg-gradient);
+            color: var(--current-text-color);
+            transition: background 0.3s, color 0.3s;
+            margin: 0;
+            padding: 0;
+            animation: gradientAnimation 10s infinite alternate;
+            overflow: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background: var(--current-bg-gradient); }
+            100% { background: var(--current-bg-gradient); }
+        }
+
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 200px;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 100%);
+            opacity: 0.5;
+            animation: waveAnimation 6s infinite linear;
+        }
+
+        @keyframes waveAnimation {
+            0% { transform: translateX(0) translateY(5px); }
+            50% { transform: translateX(-30px) translateY(-5px); }
+            100% { transform: translateX(0) translateY(5px); }
+        }   
+        
+        .app-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            height: 80vh;
+            background: var(--current-container-bg);
+            border-radius: 16px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Sidebar styles */
+        .sidebar {
+            width: 280px;
+            background: var(--current-sidebar-bg);
+            border-right: 1px solid var(--current-border-color);
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--current-border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .new-chat-btn {
+            background-color: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .new-chat-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .conversations-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .conversation-item {
+            padding: 14px 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            position: relative;
+        }
+        
+        .conversation-item:hover {
+            background: var(--current-sidebar-hover);
+        }
+        
+        .conversation-item.active {
+            background: var(--current-sidebar-active);
+            font-weight: 500;
+        }
+        
+        .conversation-item .title {
+            font-size: 14px;
+            margin-bottom: 4px;
+            margin-right: 25px; /* Space for delete button */
+        }
+        
+        .conversation-item .date {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .delete-chat-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: var(--current-text-color);
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        
+        .delete-chat-btn:hover {
+            opacity: 1;
+        }
+        
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--current-border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--current-user-msg-bg);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            background: var(--current-header-bg);
+            color: white;
+        }
+
+        .styled-home-button {
+            background-color: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .styled-home-button:hover {
+            background-color: #2563eb;
+            opacity: 0.9;
+        }
+
+        .toggle-mode {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .chat-container {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 90%;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease-in-out;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background: var(--current-user-msg-bg);
+            color: white;
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+            background: var(--current-bot-msg-bg);
+            color: var(--current-text-color);
+        }
+        
+        .message-timestamp {
+            font-size: 11px;
+            margin-top: 8px;
+            opacity: 0.7;
+            text-align: right;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 12px;
+            background: var(--current-input-bg);
+            border-top: 2px solid var(--current-border-color);
+        }
+
+        .chat-input-wrapper {
+            position: relative;
+            display: flex;
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        .voice-btn {
+            margin-right: 8px;
+            padding: 12px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px 12px 12px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--current-border-color);
+            outline: none;
+            font-size: 14px;
+            background: var(--current-input-field-bg);
+            color: var(--current-text-color);
+        }
+
+        .chat-input button {
+            margin-left: 10px;
+            padding: 12px 16px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .chat-input button:hover {
+            background: #2563eb;
+            opacity: 0.9;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .btn-group button {
+            margin-left: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            height: 100%;
+        }
+        
+        .welcome-screen h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .welcome-screen p {
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--current-text-color);
+        }
+        
+        .chat-now-btn {
+            padding: 14px 30px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chat-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .speech-status {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--current-text-color);
+            opacity: 0.7;
+        }
+        
+        .listening-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #f44336;
+            margin-right: 5px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .speech-options {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .speech-options label {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        .settings-panel {
+            padding: 15px;
+            background: var(--current-container-bg);
+            border-top: 1px solid var(--current-border-color);
+        }
+        
+        .settings-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--current-border-color);
+            background: var(--current-input-field-bg);
+            color: var(--current-text-color);
+        }
+        
+        .message-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+        }
+        
+        .message-control-btn {
+            background: none;
+            border: none;
+            color: var(--current-text-color);
+            opacity: 0.6;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 5px;
+            margin-left: 5px;
+        }
+        
+        .message-control-btn:hover {
+            opacity: 1;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hidden class for welcome screen/chat interface toggle */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Username modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--current-container-bg);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--current-border-color);
+            background: var(--current-input-field-bg);
+            color: var(--current-text-color);
+        }
+
+        .modal button {
+            padding: 12px 24px;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        /* Confirm dialog for chat deletion */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .confirm-content {
+            background: var(--current-container-bg);
+            padding: 20px 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+        }
+        
+        .confirm-content h3 {
+            margin-bottom: 15px;
+        }
+        
+        .confirm-content p {
+            margin-bottom: 20px;
+            color: var(--current-text-color);
+        }
+        
+        .confirm-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .confirm-cancel {
+            padding: 10px 20px;
+            background: var(--current-bot-msg-bg);
+            color: var(--current-text-color);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .confirm-delete {
+            padding: 10px 20px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+                height: 100vh;
+                width: 100%;
+                border-radius: 0;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--current-border-color);
+                max-height: 40vh;
+            }
+            
+            .main-content {
+                flex-grow: 1;
+                height: 60vh;
+            }
+            
+            body {
+                padding: 0;
+                height: 100vh;
+            }
+        }
+        
+        /* Tooltip for truncated conversations */
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip:hover::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: var(--current-container-bg);
+            color: var(--current-text-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: normal;
+            width: 200px;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            position: relative;
+            width: 64px;
+            height: 32px;
+        }
+        .loading div {
+            position: absolute;
+            top: 12px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--current-text-color);
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        .loading div:nth-child(1) {
+            left: 6px;
+            animation: loading1 0.6s infinite;
+        }
+        .loading div:nth-child(2) {
+            left: 6px;
+            animation: loading2 0.6s infinite;
+        }
+        .loading div:nth-child(3) {
+            left: 26px;
+            animation: loading2 0.6s infinite;
+        }
+        .loading div:nth-child(4) {
+            left: 45px;
+            animation: loading3 0.6s infinite;
+        }
+        @keyframes loading1 {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        @keyframes loading3 {
+            0% { transform: scale(1); }
+            100% { transform: scale(0); }
+        }
+        @keyframes loading2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(19px, 0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Username Modal -->
+    <div class="modal" id="usernameModal">
+        <div class="modal-content">
+            <h3>Welcome to Calm AI</h3>
+            <p>Please enter your username to start:</p>
+            <input type="text" id="usernameInput" placeholder="Username" onkeydown="handleUsernameKeyPress(event)">
+            <button onclick="setUsername()">Continue</button>
+        </div>
+    </div>
+    
+    <!-- Confirm Delete Modal -->
+    <div class="confirm-modal hidden" id="confirmDeleteModal">
+        <div class="confirm-content">
+            <h3>Delete Conversation</h3>
+            <p>Are you sure you want to delete this conversation? This action cannot be undone.</p>
+            <div class="confirm-buttons">
+                <button class="confirm-cancel" onclick="cancelDeleteChat()">Cancel</button>
+                <button class="confirm-delete" onclick="confirmDeleteChat()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar for conversation history -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <button id="newChatBtn" class="new-chat-btn">+ New Chat</button>
+            </div>
+            <div class="conversations-list" id="conversationsList">
+                <!-- Conversation items will be loaded here -->
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="usernameDisplay">User</span>
+                </div>
+                <span id="modeIcon" class="toggle-mode" onclick="toggleDarkMode()">🌙</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <h3>Your mental health support companion.</h3>
+                <button class="styled-home-button" onclick="window.location.href='merged_final.html'">Home</button>
+            </div>
+            
+            <!-- Welcome Screen for new chats -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <h2>Welcome to Calm AI</h2>
+                <p>I'm here to listen and support you through difficult times. Feel free to share your thoughts, and I'll be here to help.</p>
+                <button class="chat-now-btn" onclick="startNewChat()">Start Chat</button>
+            </div>
+            
+            <!-- Chat Interface (initially hidden) -->
+            <div class="chat-container hidden" id="chatBox"></div>
+            
+            <div class="chat-input hidden" id="chatInput">
+                <button class="voice-btn" id="voiceBtn" onclick="toggleSpeechRecognition()">🎙️</button>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="userInput" placeholder="💬 Share your thoughts..." onkeydown="handleKeyPress(event)">
+                    <div id="listeningStatus" class="speech-status hidden">
+                        <span class="listening-indicator"></span> Listening...
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables for speech recognition and synthesis
+        let recognition;
+        let isListening = false;
+        let selectedVoice = null;
+        let speechRate = 1;
+        let autoListen = false;
+        let username = "";
+        let activeConversationId = null;
+        let chatToDeleteId = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for system dark mode preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.remove('light-mode');
+                document.documentElement.classList.add('dark-mode');
+                document.getElementById("modeIcon").textContent = "☀️";
+                localStorage.setItem("theme", "dark");
+            }
+            
+            // Set up new chat button event
+            document.getElementById('newChatBtn').addEventListener('click', startNewChat);
+            
+            // Show username modal first
+            document.getElementById('usernameModal').classList.remove('hidden');
+            
+            // Initialize speech recognition
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+                
+                recognition.onresult = function(event) {
+                    let interim_transcript = '';
+                    let final_transcript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            final_transcript += event.results[i][0].transcript;
+                        } else {
+                            interim_transcript += event.results[i][0].transcript;
+                        }
+                    }
+                    
+                    document.getElementById("userInput").value = final_transcript || interim_transcript;
+                    
+                    if (final_transcript) {
+                        // Don't automatically send on final transcript
+                        // This gives user a chance to review before sending
+                        if (autoListen) {
+                            setTimeout(() => {
+                                toggleSpeechRecognition();
+                            }, 1000);
+                        }
+                    }
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    document.getElementById("voiceBtn").textContent = "🎙️";
+                    document.getElementById("listeningStatus").classList.add("hidden");
+                    document.getElementById("userInput").placeholder = "💬 Share your thoughts...";
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error("Speech recognition error", event.error);
+                    isListening = false;
+                    document.getElementById("voiceBtn").textContent = "🎙️";
+                    document.getElementById("listeningStatus").classList.add("hidden");
+                    document.getElementById("userInput").placeholder = "💬 Share your thoughts...";
+                    
+                    if (event.error === 'not-allowed') {
+                        alert("Microphone access denied. Please check your browser permissions.");
+                    }
+                };
+            }
+            
+            // Initialize voice selector (kept but not displayed)
+            populateVoiceSelector();
+            if (window.speechSynthesis) {
+                // Voice list might not be available immediately
+                if (speechSynthesis.getVoices().length === 0) {
+                    speechSynthesis.addEventListener('voiceschanged', populateVoiceSelector);
+                }
+            }
+            
+            // Load saved preferences
+            loadPreferences();
+            
+            // Check for existing username
+            const savedUsername = localStorage.getItem('username');
+            if (savedUsername) {
+                username = savedUsername;
+                document.getElementById('usernameInput').value = username;
+            }
+        });
+        // Handle Enter key press in username field
+        function handleUsernameKeyPress(event) {
+            if (event.key === "Enter") {
+                setUsername();
+            }
+        }
+
+        function setUsername() {
+            const usernameInput = document.getElementById('usernameInput');
+            if (usernameInput.value.trim() === "") {
+                alert("Please enter a username");
+                return;
+            }
+            
+            username = usernameInput.value.trim();
+            
+            try {
+                localStorage.setItem('username', username);
+                document.getElementById('usernameModal').classList.add('hidden');
+                document.getElementById('usernameDisplay').textContent = username;
+                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+                
+                // Load conversation list
+                loadConversationsList();} catch (e) {
+                console.error("Error storing username:", e);
+            }
+        }
+
+        // Toggle dark/light mode
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const modeIcon = document.getElementById("modeIcon");
+            
+            if (html.classList.contains('light-mode')) {
+                html.classList.remove('light-mode');
+                html.classList.add('dark-mode');
+                modeIcon.textContent = "☀️";
+                localStorage.setItem("theme", "dark");
+            } else {
+                html.classList.remove('dark-mode');
+                html.classList.add('light-mode');
+                modeIcon.textContent = "🌙";
+                localStorage.setItem("theme", "light");
+            }
+        }
+
+        // Load user preferences from localStorage
+        function loadPreferences() {
+            const savedTheme = localStorage.getItem("theme");
+            const html = document.documentElement;
+            const modeIcon = document.getElementById("modeIcon");
+            
+            if (savedTheme === "dark") {
+                html.classList.remove('light-mode');
+                html.classList.add('dark-mode');
+                modeIcon.textContent = "☀️";
+            } else {
+                html.classList.remove('dark-mode');
+                html.classList.add('light-mode');
+                modeIcon.textContent = "🌙";
+            }
+        }
+
+        // Handle user input via keyboard
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        // Toggle speech recognition
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                alert("Speech recognition is not supported in your browser.");
+                return;
+            }
+            
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+                document.getElementById("voiceBtn").textContent = "🎙️";
+                document.getElementById("listeningStatus").classList.add("hidden");
+                document.getElementById("userInput").placeholder = "💬 Share your thoughts...";
+            } else {
+                recognition.start();
+                isListening = true;
+                document.getElementById("voiceBtn").textContent = "⏹️";
+                document.getElementById("listeningStatus").classList.remove("hidden");
+                document.getElementById("userInput").placeholder = "Speak now...";
+            }
+        }
+
+        // Populate voice selector dropdown
+        function populateVoiceSelector() {
+            if (!window.speechSynthesis) return;
+            
+            const voices = speechSynthesis.getVoices();
+            if (!voices.length) return;
+            
+            const voiceSelect = document.getElementById("voiceSelect");
+            if (!voiceSelect) return;
+            
+            // Clear existing options
+            voiceSelect.innerHTML = "";
+            
+            // Add default option
+            const defaultOption = document.createElement("option");
+            defaultOption.textContent = "Default Voice";
+            defaultOption.value = "";
+            voiceSelect.appendChild(defaultOption);
+            
+            // Add all available voices
+            voices.forEach((voice, index) => {
+                const option = document.createElement("option");
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.value = index;
+                voiceSelect.appendChild(option);
+                
+                // Set selected voice if saved
+                const savedVoiceIndex = localStorage.getItem("selectedVoice");
+                if (savedVoiceIndex !== null && parseInt(savedVoiceIndex) === index) {
+                    option.selected = true;
+                    selectedVoice = voice;
+                }
+            });
+        }
+
+        // Start a new chat
+        function startNewChat() {
+            // Hide welcome screen
+            document.getElementById("welcomeScreen").classList.add("hidden");
+            
+            // Show chat interface
+            document.getElementById("chatBox").classList.remove("hidden");
+            document.getElementById("chatInput").classList.remove("hidden");
+            
+            // Generate new conversation ID
+            activeConversationId = Date.now().toString();
+            
+            // Clear chat box
+            document.getElementById("chatBox").innerHTML = "";
+            
+            // Add initial bot message
+            addMessage("Hello! I'm Calm AI, your mental health support companion. I'm here to listen and support you through difficult times. How are you feeling today?", "bot");
+            
+            // Create new conversation in storage
+            saveConversation({
+                id: activeConversationId,
+                title: "New Conversation",
+                messages: [{
+                    text: "Hello! I'm Calm AI, your mental health support companion. I'm here to listen and support you through difficult times. How are you feeling today?",
+                    sender: "bot",
+                    timestamp: new Date().toISOString()
+                }],
+                createdAt: new Date().toISOString()
+            });
+            
+            // Update conversations list
+            loadConversationsList();
+            
+            // Focus on input
+            document.getElementById("userInput").focus();
+        }
+
+        // Send user message
+        function sendMessage() {
+            const input = document.getElementById("userInput");
+            const message = input.value.trim();
+            
+            if (message === "") return;
+            
+            // Display user message
+            addMessage(message, "user");
+            
+            // Clear input
+            input.value = "";
+            
+            // Save message to conversation
+            saveMessageToConversation(message, "user");
+            
+            // Show "typing" indicator
+            showTypingIndicator();
+            
+            // Generate bot response (with slight delay to simulate thinking)
+            setTimeout(() => {
+                generateResponse(message);
+            }, 1000 + Math.random() * 1000);
+        }
+
+        // Add message to chat box
+        function addMessage(text, sender) {
+            const chatBox = document.getElementById("chatBox");
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message");
+            messageDiv.classList.add(sender === "user" ? "user-message" : "bot-message");
+            
+            // Create message content
+            const messageText = document.createElement("div");
+            messageText.innerHTML = formatMessage(text);
+            messageDiv.appendChild(messageText);
+            
+            // Add timestamp
+            const timestamp = document.createElement("div");
+            timestamp.classList.add("message-timestamp");
+            const now = new Date();
+            timestamp.textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+            messageDiv.appendChild(timestamp);
+            
+            // Add message controls for bot messages
+            if (sender === "bot") {
+                const controls = document.createElement("div");
+                controls.classList.add("message-controls");
+                
+                const speakBtn = document.createElement("button");
+                speakBtn.classList.add("message-control-btn");
+                speakBtn.textContent = "🔊";
+                speakBtn.title = "Read aloud";
+                speakBtn.onclick = () => speakText(text);
+                
+                controls.appendChild(speakBtn);
+                messageDiv.appendChild(controls);
+            }
+            
+            chatBox.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Format message text with markdown-like syntax
+        function formatMessage(text) {
+            // Convert line breaks to <br>
+            text = text.replace(/\n/g, "<br>");
+            
+            // Bold text between **asterisks**
+            text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+            
+            // Italic text between *asterisks*
+            text = text.replace(/\*(.*?)\*/g, "<em>$1</em>");
+            
+            return text;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const chatBox = document.getElementById("chatBox");
+            const typingDiv = document.createElement("div");
+            typingDiv.classList.add("message", "bot-message");
+            typingDiv.id = "typingIndicator";
+            
+            const loadingDiv = document.createElement("div");
+            loadingDiv.classList.add("loading");
+            loadingDiv.innerHTML = "<div></div><div></div><div></div><div></div>";
+            
+            typingDiv.appendChild(loadingDiv);
+            chatBox.appendChild(typingDiv);
+            
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const indicator = document.getElementById("typingIndicator");
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        // Generate bot response
+        function generateResponse(userMessage) {
+            // Remove typing indicator
+            removeTypingIndicator();
+            
+            let response = "";
+            
+            // Simple response generation logic
+            userMessage = userMessage.toLowerCase();
+            
+            if (userMessage.includes("anxious") || userMessage.includes("anxiety")) {
+                response = "I understand that anxiety can be overwhelming. Remember to take deep breaths and focus on the present moment. What specific situations trigger your anxiety?";
+            } else if (userMessage.includes("sad") || userMessage.includes("depression") || userMessage.includes("depressed")) {
+                response = "I'm sorry to hear you're feeling down. Depression can make everything feel more difficult. Have you been able to talk to anyone else about how you're feeling?";
+            } else if (userMessage.includes("stress") || userMessage.includes("stressed")) {
+                response = "Stress affects all of us. It might help to identify your stressors and think about what's within your control. What's been causing you stress lately?";
+            } else if (userMessage.includes("tired") || userMessage.includes("exhausted") || userMessage.includes("fatigue")) {
+                response = "Feeling tired can impact your mental health significantly. How have your sleep patterns been lately? Are you getting enough rest?";
+            } else if (userMessage.includes("lonely") || userMessage.includes("alone")) {
+                response = "Loneliness can be really difficult. Even when surrounded by people, we can feel disconnected. Would you like to talk about ways to build meaningful connections?";
+            } else if (userMessage.includes("suicide") || userMessage.includes("kill myself") || userMessage.includes("end my life")) {
+                response = "I'm really concerned about what you're sharing. If you're having thoughts of harming yourself, please reach out to a crisis helpline immediately at 988 (US), or text HOME to 741741 to reach the Crisis Text Line. Your life matters, and professional support is available 24/7.";
+            } else if (userMessage.includes("hello") || userMessage.includes("hi ") || userMessage === "hi" || userMessage.includes("hey")) {
+                response = "Hello! I'm here to support you. How are you feeling today?";
+            } else if (userMessage.includes("thank")) {
+                response = "You're welcome. I'm here to support you whenever you need someone to talk to.";
+            } else if (userMessage.includes("good") || userMessage.includes("great") || userMessage.includes("well")) {
+                response = "I'm glad to hear you're doing well! Is there anything specific that's contributing to your positive mood today?";
+            } else if (userMessage.includes("bad") || userMessage.includes("not good") || userMessage.includes("terrible")) {
+                response = "I'm sorry to hear you're not feeling well. Would you like to tell me more about what's troubling you?";
+            } else if (userMessage.includes("help") || userMessage.includes("need advice")) {
+                response = "I'm here to help. Could you share a bit more about what's on your mind so I can better understand how to support you?";
+            } else if (userMessage.includes("therapist") || userMessage.includes("professional help")) {
+                response = "Seeking professional help is a great step. A trained therapist can provide strategies tailored to your specific needs. Would you like some information on how to find mental health resources?";
+            } else if (userMessage.includes("exercise") || userMessage.includes("workout")) {
+                response = "Physical activity is great for mental health! Even small amounts of movement can boost your mood. What types of activities do you enjoy?";
+            } else if (userMessage.includes("meditation") || userMessage.includes("mindfulness")) {
+                response = "Mindfulness and meditation can be powerful tools for managing stress and anxiety. Have you tried any mindfulness practices before?";
+            } else if (userMessage.includes("sleep") || userMessage.includes("insomnia")) {
+                response = "Sleep is so important for mental wellbeing. Establishing a regular sleep routine can help. What does your current sleep schedule look like?";
+            } else if (userMessage.includes("friend") || userMessage.includes("relationship")) {
+                response = "Relationships can significantly impact our mental health. Would you like to talk more about the specific relationship that's on your mind?";
+            } else if (userMessage.includes("work") || userMessage.includes("job") || userMessage.includes("career")) {
+                response = "Work-related stress is very common. Finding a balance between professional responsibilities and personal wellbeing is important. What aspects of work are most challenging for you?";
+            } else if (userMessage.includes("family") || userMessage.includes("parent") || userMessage.includes("child")) {
+                response = "Family dynamics can be complex and emotionally charged. Would you like to share more about what's happening with your family?";
+            } else if (userMessage.length < 10) {
+                response = "I'm here to listen. Feel free to share more about what's on your mind when you're ready.";
+            } else {
+                response = "Thank you for sharing that with me. How has this been affecting your daily life? I'm here to listen and support you.";
+            }
+            
+            // Display bot response
+            addMessage(response, "bot");
+            
+            // Save to conversation
+            saveMessageToConversation(response, "bot");
+            
+            // Update conversation title if this is the first user message
+            updateConversationTitle(userMessage);
+        }
+
+        // Speak text using speech synthesis
+        function speakText(text) {
+            if (!window.speechSynthesis) {
+                alert("Speech synthesis is not supported in your browser.");
+                return;
+            }
+            
+            // Cancel any ongoing speech
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Set selected voice if available
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            }
+            
+            // Set speech rate
+            utterance.rate = speechRate;
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        // Save message to active conversation
+        function saveMessageToConversation(text, sender) {
+            if (!activeConversationId) return;
+            
+            try {
+                // Get conversations from localStorage
+                const conversations = JSON.parse(localStorage.getItem("conversations") || "[]");
+                
+                // Find active conversation
+                const conversationIndex = conversations.findIndex(c => c.id === activeConversationId);
+                if (conversationIndex === -1) return;
+                
+                // Add message to conversation
+                conversations[conversationIndex].messages.push({
+                    text: text,
+                    sender: sender,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Update conversation lastModified
+                conversations[conversationIndex].lastModified = new Date().toISOString();
+                
+                // Save back to localStorage
+                localStorage.setItem("conversations", JSON.stringify(conversations));
+            } catch (e) {
+                console.error("Error saving message:", e);
+            }
+        }
+
+        // Save new conversation or update existing one
+        function saveConversation(conversation) {
+            try {
+                // Get conversations from localStorage
+                const conversations = JSON.parse(localStorage.getItem("conversations") || "[]");
+                
+                // Check if conversation already exists
+                const existingIndex = conversations.findIndex(c => c.id === conversation.id);
+                
+                if (existingIndex !== -1) {
+                    // Update existing conversation
+                    conversations[existingIndex] = {...conversations[existingIndex], ...conversation};
+                } else {
+                    // Add new conversation
+                    conversations.push(conversation);
+                }
+                
+                // Save back to localStorage
+                localStorage.setItem("conversations", JSON.stringify(conversations));
+            } catch (e) {
+                console.error("Error saving conversation:", e);
+            }
+        }
+
+        // Update conversation title based on first user message
+        function updateConversationTitle(userMessage) {
+            if (!activeConversationId) return;
+            
+            try {
+                // Get conversations from localStorage
+                const conversations = JSON.parse(localStorage.getItem("conversations") || "[]");
+                
+                // Find active conversation
+                const conversationIndex = conversations.findIndex(c => c.id === activeConversationId);
+                if (conversationIndex === -1) return;
+                
+                // Get user messages
+                const userMessages = conversations[conversationIndex].messages.filter(m => m.sender === "user");
+                
+                // Only update title if this is the first user message
+                if (userMessages.length === 1) {
+                    // Create title from first 30 chars of message
+                    let title = userMessage.substring(0, 30);
+                    if (userMessage.length > 30) title += "...";
+                    
+                    // Update conversation title
+                    conversations[conversationIndex].title = title;
+                    
+                    // Save back to localStorage
+                    localStorage.setItem("conversations", JSON.stringify(conversations));
+                    
+                    // Update conversations list
+                    loadConversationsList();
+                }
+            } catch (e) {
+                console.error("Error updating conversation title:", e);
+            }
+        }
+
+        // Load list of conversations
+        function loadConversationsList() {
+            try {
+                // Get conversations from localStorage
+                const conversations = JSON.parse(localStorage.getItem("conversations") || "[]");
+                
+                // Sort by last modified (most recent first)
+                conversations.sort((a, b) => {
+                    const dateA = new Date(a.lastModified || a.createdAt);
+                    const dateB = new Date(b.lastModified || b.createdAt);
+                    return dateB - dateA;
+                });
+                
+                const listContainer = document.getElementById("conversationsList");
+                listContainer.innerHTML = "";
+                
+                if (conversations.length === 0) {
+                    const noChatsMessage = document.createElement("div");
+                    noChatsMessage.textContent = "No conversations yet";
+                    noChatsMessage.style.padding = "20px";
+                    noChatsMessage.style.textAlign = "center";
+                    noChatsMessage.style.color = "var(--current-text-color)";
+                    noChatsMessage.style.opacity = "0.7";
+                    listContainer.appendChild(noChatsMessage);
+                    return;
+                }
+                
+                // Add each conversation to the list
+                conversations.forEach(conversation => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.classList.add("conversation-item");
+                    itemDiv.dataset.id = conversation.id;
+                    
+                    if (activeConversationId === conversation.id) {
+                        itemDiv.classList.add("active");
+                    }
+                    
+                    // Add title
+                    const titleDiv = document.createElement("div");
+                    titleDiv.classList.add("title");
+                    titleDiv.textContent = conversation.title || "New Conversation";
+                    
+                    // Add tooltip for full title
+                    if (conversation.title && conversation.title.length > 25) {
+                        itemDiv.classList.add("tooltip");
+                        itemDiv.dataset.title = conversation.title;
+                    }
+                    
+                    // Add date
+                    const dateDiv = document.createElement("div");
+                    dateDiv.classList.add("date");
+                    const date = new Date(conversation.lastModified || conversation.createdAt);
+                    dateDiv.textContent = formatDate(date);
+                    
+                    // Add delete button
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.classList.add("delete-chat-btn");
+                    deleteBtn.textContent = "×";
+                    deleteBtn.title = "Delete conversation";
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        promptDeleteChat(conversation.id);
+                    };
+                    
+                    // Add click event to load conversation
+                    itemDiv.onclick = () => loadConversation(conversation.id);
+                    
+                    itemDiv.appendChild(titleDiv);
+                    itemDiv.appendChild(dateDiv);
+                    itemDiv.appendChild(deleteBtn);
+                    listContainer.appendChild(itemDiv);
+                });
+            } catch (e) {
+                console.error("Error loading conversations:", e);
+            }
+        }
+
+        // Format date for conversation list
+        function formatDate(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                // Today - show time
+                return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            } else if (diffDays === 1) {
+                return "Yesterday";
+            } else if (diffDays < 7) {
+                // This week - show day name
+                return date.toLocaleDateString([], {weekday: 'short'});
+            } else {
+                // Older - show date
+                return date.toLocaleDateString([], {month: 'short', day: 'numeric'});
+            }
+        }
+
+        // Load a conversation
+        function loadConversation(conversationId) {
+            try {
+                // Get conversations from localStorage
+                const conversations = JSON.parse(localStorage.getItem("conversations") || "[]");
+                
+                // Find conversation
+                const conversation = conversations.find(c => c.id === conversationId);
+                if (!conversation) return;
+                
+                // Set active conversation
+                activeConversationId = conversationId;
+                
+                // Hide welcome screen
+                document.getElementById("welcomeScreen").classList.add("hidden");
+                
+                // Show chat interface
+                document.getElementById("chatBox").classList.remove("hidden");
+                document.getElementById("chatInput").classList.remove("hidden");
+                
+                // Clear chat box
+                document.getElementById("chatBox").innerHTML = "";
+                
+                // Load messages
+                if (conversation.messages && conversation.messages.length > 0) {
+                    conversation.messages.forEach(msg => {
+                        addMessage(msg.text, msg.sender);
+                    });
+                }
+                
+                // Update active conversation in list
+                loadConversationsList();
+                
+                // Focus on input
+                document.getElementById("userInput").focus();
+            } catch (e) {
+                console.error("Error loading conversation:", e);
+            }
+        }
+
+        // Prompt to delete a chat
+        function promptDeleteChat(conversationId) {
+            chatToDeleteId = conversationId;
+            document.getElementById("confirmDeleteModal").classList.remove("hidden");
+        }
+
+        // Cancel chat deletion
+        function cancelDeleteChat() {
+            chatToDeleteId = null;
+            document.getElementById("confirmDeleteModal").classList.add("hidden");
+        }
+
+        // Confirm chat deletion
+        function confirmDeleteChat() {
+            if (!chatToDeleteId) return;
+            
+            try {
+                // Get conversations from localStorage
+                const conversations = JSON.parse(localStorage.getItem("conversations") || "[]");
+                
+                // Remove conversation
+                const newConversations = conversations.filter(c => c.id !== chatToDeleteId);
+                
+                // Save back to localStorage
+                localStorage.setItem("conversations", JSON.stringify(newConversations));
+                
+                // Hide modal
+                document.getElementById("confirmDeleteModal").classList.add("hidden");
+                
+                // Check if deleted conversation was active
+                if (chatToDeleteId === activeConversationId) {
+                    activeConversationId = null;
+                    document.getElementById("chatBox").classList.add("hidden");
+                    document.getElementById("chatInput").classList.add("hidden");
+                    document.getElementById("welcomeScreen").classList.remove("hidden");
+                }
+                
+                // Update conversations list
+                loadConversationsList();
+                
+                // Clear deletion id
+                chatToDeleteId = null;
+            } catch (e) {
+                console.error("Error deleting conversation:", e);
+            }
+        }
+    </script>
+</body>
+</html>

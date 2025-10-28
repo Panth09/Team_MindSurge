@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en" class="light-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm AI - Mental Health Support</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --bg-gradient-light: linear-gradient(120deg, #89CFF0, #ADD8E6, #87CEEB);
+            --bg-gradient-dark: linear-gradient(120deg, #121212, #1a1a1a, #2c2c2c);
+            --container-bg-light: #f0f8ff;
+            --container-bg-dark: #252525;
+            --header-bg-light: linear-gradient(90deg, #60a5fa, #3b82f6);
+            --header-bg-dark: #2563eb;
+            --bot-msg-bg-light: #e5e7eb;
+            --bot-msg-bg-dark: #333;
+            --user-msg-bg-light: #3b82f6;
+            --user-msg-bg-dark: #1e40af;
+            --input-bg-light: #f9fafb;
+            --input-bg-dark: #2d2d2d;
+            --input-field-bg-light: white;
+            --input-field-bg-dark: #1e1e1e;
+            --text-color-light: black;
+            --text-color-dark: white;
+            --border-color-light: #3b82f6;
+            --border-color-dark: #444;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        html.dark-mode {
+            --current-bg-gradient: var(--bg-gradient-dark);
+            --current-container-bg: var(--container-bg-dark);
+            --current-header-bg: var(--header-bg-dark);
+            --current-bot-msg-bg: var(--bot-msg-bg-dark);
+            --current-user-msg-bg: var(--user-msg-bg-dark);
+            --current-input-bg: var(--input-bg-dark);
+            --current-input-field-bg: var(--input-field-bg-dark);
+            --current-text-color: var(--text-color-dark);
+            --current-border-color: var(--border-color-dark);
+        }
+        
+        html.light-mode {
+            --current-bg-gradient: var(--bg-gradient-light);
+            --current-container-bg: var(--container-bg-light);
+            --current-header-bg: var(--header-bg-light);
+            --current-bot-msg-bg: var(--bot-msg-bg-light);
+            --current-user-msg-bg: var(--user-msg-bg-light);
+            --current-input-bg: var(--input-bg-light);
+            --current-input-field-bg: var(--input-field-bg-light);
+            --current-text-color: var(--text-color-light);
+            --current-border-color: var(--border-color-light);
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--current-bg-gradient);
+            color: var(--current-text-color);
+            transition: background 0.3s, color 0.3s;
+            margin: 0;
+            padding: 0;
+            animation: gradientAnimation 10s infinite alternate;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--current-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--current-text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-links a.active:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            min-height: 60vh;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Button Styles */
+        .login-btn {
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        .signup-btn {
+            padding: 0.5rem 1rem;
+            background-color: #3b82f6; /* Blue */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .signup-btn:hover {
+            background-color: #357ae8; /* Darker blue on hover */
+        }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 4rem 2rem;
+            background: var(--current-container-bg);
+        }
+
+        .feature-card {
+            background: var(--current-input-field-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--current-text-color);
+            opacity: 0.8;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--current-bg-gradient);
+        }
+
+        .testimonial-heading {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .testimonial-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--current-container-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 300px;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--current-header-bg);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .toggle-mode {
+            background: none;
+            border: none;
+            color: var(--current-text-color);
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--current-container-bg);
+            border-radius: 16px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 90%;
+            padding: 2rem;
+            position: relative;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--current-text-color);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .close-modal:hover {
+            opacity: 1;
+        }
+
+        /* Form styles */
+        .modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--current-text-color);
+        }
+
+        .modal-header p {
+            color: var(--current-text-color);
+            opacity: 0.8;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--current-text-color);
+        }
+
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--current-border-color);
+            border-radius: 8px;
+            background: var(--current-input-field-bg);
+            color: var(--current-text-color);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--current-user-msg-bg);
+        }
+
+        .auth-button {
+            padding: 0.8rem 1rem;
+            background: var(--current-user-msg-bg);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .auth-button:hover {
+            background: var(--current-user-msg-bg-dark);
+        }
+
+        .social-login {
+            text-align: center;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-login p {
+            margin-bottom: 1rem;
+            color: var(--current-text-color);
+            opacity: 0.8;
+            position: relative;
+        }
+
+        .social-login p:before,
+        .social-login p:after {
+            content: "";
+            position: absolute;
+            height: 1px;
+            width: 30%;
+            background: var(--current-border-color);
+            top: 50%;
+        }
+
+        .social-login p:before {
+            left: 0;
+        }
+
+        .social-login p:after {
+            right: 0;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--current-input-field-bg);
+            border: 1px solid var(--current-border-color);
+            color: var(--current-text-color);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .social-button:hover {
+            background: var(--current-border-color);
+            transform: translateY(-3px);
+        }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .switch-auth a {
+            color: var(--current-user-msg-bg);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+
+        .switch-auth a:hover {
+            opacity: 0.8;
+        }
+
+        /* Success message */
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f44336;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">🧠 <span>Calm AI</span></a>
+        <div class="nav-links">
+            <a href="blogs.html">Blogs</a>
+            <a href="suggestions.html">Suggestions</a>
+            <a href="about.html">About</a>
+        </div>
+        <div class="user-actions">
+            <button id="loginBtn" class="login-btn">Login</button>
+            <button id="signupBtn" class="signup-btn">Sign Up</button>
+            <button class="toggle-mode" id="toggleMode">
+                <span id="modeIcon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Your Mental Health Companion</h1>
+        <p>Calm AI provides supportive, judgment-free conversations to help you navigate life's challenges. Talk to our AI companion anytime, anywhere.</p>
+        <button class="cta-button" onclick="window.location.href='ui.html'">Chat Now</button>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Private & Secure</h3>
+            <p>Your conversations are completely private and secure. We prioritize your confidentiality above all else.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⏰</div>
+            <h3>24/7 Availability</h3>
+            <p>Get support whenever you need it, day or night. Calm AI is always here to listen and help.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Personalized Support</h3>
+            <p>Our AI adapts to your needs and provides tailored guidance based on your unique situation.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎤</div>
+            <h3>Voice Interaction</h3>
+            <p>Speak naturally with our AI companion. Voice recognition and text-to-speech make communication effortless.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <h2 class="testimonial-heading">What Our Users Say</h2>
+        <div class="testimonial-cards">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Calm AI helped me through a difficult time when I felt like I had no one to talk to. It's been a real lifeline."</p>
+                <p class="testimonial-author">- Jay G. Abhadra</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"I appreciate having a place to express my thoughts without judgment. The daily check-ins keep me accountable for my mental health."</p>
+                <p class="testimonial-author">- Pritesh Rathwa</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"As someone with social anxiety, having a private space to work through my thoughts has been invaluable."</p>
+                <p class="testimonial-author">- Hiya Jagtap</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <p>Calm AI - Your mental health support companion</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <p>&copy; 2025 Calm AI. All rights reserved.</p>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <p>Login to continue your mental health journey</p>
+            </div>
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="auth-button">Sign In</button>
+                <div id="loginSuccess" class="success-message">Login successful!</div>
+                <div id="loginError" class="error-message">Invalid email or password.</div>
+            </form>
+            <div class="social-login">
+                <p>Or continue with</p>
+                <div class="social-buttons">
+                    <button class="social-button" title="Login with Google">G</button>
+                    <button class="social-button" title="Login with Facebook">f</button>
+                    <button class="social-button" title="Login with Apple">🍎</button>
+                </div>
+            </div>
+            <div class="switch-auth">
+                <p>Don't have an account? <a href="#" id="switchToSignup">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('signupModal')">&times;</span>
+            <div class="modal-header">
+                <h2>Create Account</h2>
+                <p>Join our community and start your mental health journey</p>
+            </div>
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="auth-button">Create Account</button>
+                <div id="signupSuccess" class="success-message">Account created successfully!</div>
+                <div id="signupError" class="error-message">Please check your information and try again.</div>
+            </form>
+            <div class="social-login">
+                <p>Or continue with</p>
+                <div class="social-buttons">
+                    <button class="social-button" title="Signup with Google">G</button>
+                    <button class="social-button" title="Signup with Facebook">f</button>
+                    <button class="social-button" title="Signup with Apple">🍎</button>
+                </div>
+            </div>
+            <div class="switch-auth">
+                <p>Already have an account? <a href="#" id="switchToLogin">Log in</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode toggle
+        function toggleDarkMode() {
+            const htmlElement = document.documentElement;
+            const modeIcon = document.getElementById('modeIcon');
+            
+            htmlElement.classList.toggle('dark-mode');
+            htmlElement.classList.toggle('light-mode');
+            
+            if (htmlElement.classList.contains('dark-mode')) {
+                modeIcon.textContent = '☀️';
+            } else {
+                modeIcon.textContent = '🌙';
+            }
+        }
+        
+        document.getElementById('toggleMode').addEventListener('click', toggleDarkMode);
+        
+        // Modal functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('show');
+            setTimeout(() => {
+                modal.querySelector('.modal-content').style.opacity = 1;
+                modal.querySelector('.modal-content').style.transform = 'translateY(0)';
+            }, 10);
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.querySelector('.modal-content').style.opacity = 0;
+            modal.querySelector('.modal-content').style.transform = 'translateY(30px)';
+            setTimeout(() => {
+                modal.classList.remove('show');
+            }, 300);
+            
+            // Reset form and hide messages
+            if (modalId === 'loginModal') {
+                document.getElementById('loginForm').reset();
+                document.getElementById('loginSuccess').style.display = 'none';
+                document.getElementById('loginError').style.display = 'none';
+            } else if (modalId === 'signupModal') {
+                document.getElementById('signupForm').reset();
+                document.getElementById('signupSuccess').style.display = 'none';
+                document.getElementById('signupError').style.display = 'none';
+            }
+        }
+        
+        // Modal switch functionality
+        document.getElementById('switchToSignup').addEventListener('click', function(e) {
+            e.preventDefault();
+            closeModal('loginModal');
+            setTimeout(() => {
+                openModal('signupModal');
+            }, 300);
+        });
+        
+        document.getElementById('switchToLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            closeModal('signupModal');
+            setTimeout(() => {
+                openModal('loginModal');
+            }, 300);
+        });
+        
+        // Open modal buttons
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            openModal('loginModal');
+        });
+        
+        document.getElementById('signupBtn').addEventListener('click', function() {
+            openModal('signupModal');
+        });
+        
+        // Form validation and submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const successMsg = document.getElementById('loginSuccess');
+            const errorMsg = document.getElementById('loginError');
+            
+            // For demonstration, we'll use a hardcoded credential check
+            // In a real application, this would be an API call
+            if (email === 'user@example.com' && password === 'password123') {
+                successMsg.style.display = 'block';
+                errorMsg.style.display = 'none';
+                
+                // Simulate redirect after successful login
+                setTimeout(() => {
+                    closeModal('loginModal');
+                    // You could redirect here: window.location.href = 'dashboard.html';
+                    alert('Login successful! Redirecting to dashboard...');
+                }, 1500);
+            } else {
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+            }
+        });
+        
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const successMsg = document.getElementById('signupSuccess');
+            const errorMsg = document.getElementById('signupError');
+            
+            // Basic validation
+            if (!name || !email || !password || password !== confirmPassword) {
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+                
+                if (password !== confirmPassword) {
+                    errorMsg.textContent = "Passwords don't match!";
+                } else {
+                    errorMsg.textContent = "Please fill in all fields correctly.";
+                }
+                return;
+            }
+            
+            // For demonstration, always succeed
+            // In a real application, this would be an API call to register the user
+            successMsg.style.display = 'block';
+            errorMsg.style.display = 'none';
+            
+            // Simulate redirect after successful signup
+            setTimeout(() => {
+                closeModal('signupModal');
+                // You could redirect here: window.location.href = 'dashboard.html';
+                alert('Account created successfully! Redirecting to dashboard...');
+            }, 1500);
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal') && e.target.classList.contains('show')) {
+                closeModal(e.target.id);
+            }
+        });
+    </script>
+</body>
+</html>
